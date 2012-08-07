@@ -1,8 +1,8 @@
-define network::interface ( $address, 
-                            $netmask = '255.255.255.0', 
+define network::interface ( $address = false,
+                            $netmask = '255.255.255.0',
                             $up = true,
-                            $ensure = present, 
-                            $onboot = true, 
+                            $ensure = present,
+                            $onboot = true,
                             $family = 'inet',
                             $method = 'static',
                             $hwaddress = false,
@@ -10,7 +10,7 @@ define network::interface ( $address,
                             $gateway = false,
                             $broadcast = false ) {
 
-  
+
   $device = $name
 	# Device string for augeas
   $cur_device = "iface[. = '${device}']"
@@ -71,7 +71,7 @@ define network::interface ( $address,
   			require => Augeas["common-${device}"],
   		}
   	}
-  	
+
 		augeas { "broadcast-${device}":
 			context => '/files/etc/network/interfaces',
 			changes => $broadcast ? {
@@ -81,7 +81,7 @@ define network::interface ( $address,
 			},
 			require => Augeas["common-${device}"],
 		}
-  			
+
   	if $gateway {
   		augeas { "gateway-${device}":
   			context => '/files/etc/network/interfaces',
