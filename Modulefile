@@ -1,4 +1,4 @@
-name 'puppet-network'
+name 'ajjahn-network'
 version '0.1.1'
 summary "Module for provisioning (Physical) Network Interfaces"
 description "Module for provisioning (Physical) Network Interfaces"
