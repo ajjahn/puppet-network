@@ -1,5 +1,5 @@
 name 'puppet-network'
-version '0.1.0'
+version '0.1.1'
 summary "Module for provisioning (Physical) Network Interfaces"
 description "Module for provisioning (Physical) Network Interfaces"
 author 'Adam Jahn'
