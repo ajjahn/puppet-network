@@ -8,7 +8,8 @@ define network::interface ( $address = false,
                             $hwaddress = false,
                             $network = false,
                             $gateway = false,
-                            $broadcast = false ) {
+                            $broadcast = false,
+                            $reconfig = false ) {
 
 
   $device = $name
@@ -94,16 +95,28 @@ define network::interface ( $address = false,
   		}
   	}
 
-  	if $up {
-  		exec { "ifup-${device}":
-  			command => "/sbin/ifup ${device}",
-  			unless  => "/sbin/ifconfig | grep ${device}",
-  			require => Augeas["common-${device}"],
-  		}
-  	} else {
+  	if $reconfig {
   		exec { "ifdown-${device}":
   			command => "/sbin/ifdown ${device}",
   			onlyif => "/sbin/ifconfig | grep ${device}",
+  		}
+  		exec { "ifup-${device}":
+  			command => "/sbin/ifup ${device}",
+  			require => Augeas["common-${device}"],
+  		}
+  	}
+  	else {
+  		if $up {
+  			exec { "ifup-${device}":
+  				command => "/sbin/ifup ${device}",
+  				unless  => "/sbin/ifconfig | grep ${device}",
+  				require => Augeas["common-${device}"],
+  			}
+  		} else {
+  			exec { "ifdown-${device}":
+  				command => "/sbin/ifdown ${device}",
+  				onlyif => "/sbin/ifconfig | grep ${device}",
+  			}
   		}
   	}
   } else {
